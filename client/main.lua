@@ -50,9 +50,9 @@ exports("HasItem", HasItem)
 
 RegisterNUICallback('showBlur', function()
     Wait(50)
-    TriggerEvent("lj-inventory:client:showBlur")
+    TriggerEvent("qb-inventory:client:showBlur")
 end) 
-RegisterNetEvent("lj-inventory:client:showBlur", function()
+RegisterNetEvent("qb-inventory:client:showBlur", function()
     Wait(50)
     showBlur = not showBlur
 end)
@@ -185,18 +185,19 @@ end
 
 local function ItemsToItemInfo()
 	itemInfos = {
-		[1] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 22x, " ..QBCore.Shared.Items["plastic"]["label"] .. ": 32x."},
-		[2] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 30x, " ..QBCore.Shared.Items["plastic"]["label"] .. ": 42x."},
-		[3] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 30x, " ..QBCore.Shared.Items["plastic"]["label"] .. ": 45x, "..QBCore.Shared.Items["aluminum"]["label"] .. ": 28x."},
-		[4] = {costs = QBCore.Shared.Items["electronickit"]["label"] .. ": 2x, " ..QBCore.Shared.Items["plastic"]["label"] .. ": 52x, "..QBCore.Shared.Items["steel"]["label"] .. ": 40x."},
-		[5] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 10x, " ..QBCore.Shared.Items["plastic"]["label"] .. ": 50x, "..QBCore.Shared.Items["aluminum"]["label"] .. ": 30x, "..QBCore.Shared.Items["iron"]["label"] .. ": 17x, "..QBCore.Shared.Items["electronickit"]["label"] .. ": 1x."},
-		[6] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 36x, " ..QBCore.Shared.Items["steel"]["label"] .. ": 24x, "..QBCore.Shared.Items["aluminum"]["label"] .. ": 28x."},
-		[7] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 32x, " ..QBCore.Shared.Items["steel"]["label"] .. ": 43x, "..QBCore.Shared.Items["plastic"]["label"] .. ": 61x."},
-		[8] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 50x, " ..QBCore.Shared.Items["steel"]["label"] .. ": 37x, "..QBCore.Shared.Items["copper"]["label"] .. ": 26x."},
-		[9] = {costs = QBCore.Shared.Items["iron"]["label"] .. ": 60x, " ..QBCore.Shared.Items["glass"]["label"] .. ": 30x."},
-		[10] = {costs = QBCore.Shared.Items["aluminum"]["label"] .. ": 60x, " ..QBCore.Shared.Items["glass"]["label"] .. ": 30x."},
-		[11] = {costs = QBCore.Shared.Items["iron"]["label"] .. ": 33x, " ..QBCore.Shared.Items["steel"]["label"] .. ": 44x, "..QBCore.Shared.Items["plastic"]["label"] .. ": 55x, "..QBCore.Shared.Items["aluminum"]["label"] .. ": 22x."},
-		[12] = {costs = QBCore.Shared.Items["iron"]["label"] .. ": 50x, " ..QBCore.Shared.Items["steel"]["label"] .. ": 50x, "..QBCore.Shared.Items["screwdriverset"]["label"] .. ": 3x, "..QBCore.Shared.Items["advancedlockpick"]["label"] .. ": 2x."},
+		[1] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 3x, " ..QBCore.Shared.Items["plastic"]["label"] .. ": 4x."},
+		[2] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 8x, " ..QBCore.Shared.Items["plastic"]["label"] .. ": 6x."},
+		[3] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 5x, " ..QBCore.Shared.Items["plastic"]["label"] .. ": 4x, "..QBCore.Shared.Items["aluminum"]["label"] .. ": 6x."},
+		[4] = {costs = QBCore.Shared.Items["electronickit"]["label"] .. ": 2x, " ..QBCore.Shared.Items["plastic"]["label"] .. ": 4x, "..QBCore.Shared.Items["steel"]["label"] .. ": 5x."},
+		[5] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 4x, " ..QBCore.Shared.Items["plastic"]["label"] .. ": 3x, "..QBCore.Shared.Items["aluminum"]["label"] .. ": 4x, "..QBCore.Shared.Items["iron"]["label"] .. ": 5x, "..QBCore.Shared.Items["electronickit"]["label"] .. ": 1x."},
+		[6] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 4x, " ..QBCore.Shared.Items["steel"]["label"] .. ": 4x, "..QBCore.Shared.Items["aluminum"]["label"] .. ": 4x."},
+		[7] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 4x, " ..QBCore.Shared.Items["steel"]["label"] .. ": 5x, "..QBCore.Shared.Items["plastic"]["label"] .. ": 7x."},
+		[8] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 5x, " ..QBCore.Shared.Items["steel"]["label"] .. ": 5x, "..QBCore.Shared.Items["copper"]["label"] .. ": 5x."},
+		[9] = {costs = QBCore.Shared.Items["iron"]["label"] .. ": 6x, " ..QBCore.Shared.Items["glass"]["label"] .. ": 6x."},
+		[10] = {costs = QBCore.Shared.Items["aluminum"]["label"] .. ": 6x, " ..QBCore.Shared.Items["glass"]["label"] .. ": 6x."},
+		[11] = {costs = QBCore.Shared.Items["iron"]["label"] .. ": 5x, " ..QBCore.Shared.Items["steel"]["label"] .. ": 5x, "..QBCore.Shared.Items["plastic"]["label"] .. ": 6x, "..QBCore.Shared.Items["aluminum"]["label"] .. ": 5x."},
+		[12] = {costs = QBCore.Shared.Items["iron"]["label"] .. ": 5x, " ..QBCore.Shared.Items["steel"]["label"] .. ": 6x, "..QBCore.Shared.Items["screwdriverset"]["label"] .. ": 3x, "..QBCore.Shared.Items["advancedlockpick"]["label"] .. ": 5x."},
+        [13] = {costs = QBCore.Shared.Items["iron"]["label"] .. ": 1x, " ..QBCore.Shared.Items["steel"]["label"] .. ": 1x, "..QBCore.Shared.Items["screwdriverset"]["label"] .. ": 1x, "..QBCore.Shared.Items["thermite"]["label"] .. ": 1x."},
 	}
 
 	local items = {}
@@ -224,14 +225,14 @@ end
 
 local function SetupAttachmentItemsInfo()
 	itemInfos = {
-		[1] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 140x, " .. QBCore.Shared.Items["steel"]["label"] .. ": 250x, " .. QBCore.Shared.Items["rubber"]["label"] .. ": 60x"},
-		[2] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 165x, " .. QBCore.Shared.Items["steel"]["label"] .. ": 285x, " .. QBCore.Shared.Items["rubber"]["label"] .. ": 75x"},
-		[3] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 190x, " .. QBCore.Shared.Items["steel"]["label"] .. ": 305x, " .. QBCore.Shared.Items["rubber"]["label"] .. ": 85x, " .. QBCore.Shared.Items["smg_extendedclip"]["label"] .. ": 1x"},
-		[4] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 205x, " .. QBCore.Shared.Items["steel"]["label"] .. ": 340x, " .. QBCore.Shared.Items["rubber"]["label"] .. ": 110x, " .. QBCore.Shared.Items["smg_extendedclip"]["label"] .. ": 2x"},
-		[5] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 230x, " .. QBCore.Shared.Items["steel"]["label"] .. ": 365x, " .. QBCore.Shared.Items["rubber"]["label"] .. ": 130x"},
-		[6] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 255x, " .. QBCore.Shared.Items["steel"]["label"] .. ": 390x, " .. QBCore.Shared.Items["rubber"]["label"] .. ": 145x"},
-		[7] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 270x, " .. QBCore.Shared.Items["steel"]["label"] .. ": 435x, " .. QBCore.Shared.Items["rubber"]["label"] .. ": 155x"},
-		[8] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 300x, " .. QBCore.Shared.Items["steel"]["label"] .. ": 469x, " .. QBCore.Shared.Items["rubber"]["label"] .. ": 170x"},
+		[1] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 2x, " .. QBCore.Shared.Items["steel"]["label"] .. ": 5x, " .. QBCore.Shared.Items["rubber"]["label"] .. ": 2x"},
+		[2] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 1x, " .. QBCore.Shared.Items["steel"]["label"] .. ": 2x, " .. QBCore.Shared.Items["rubber"]["label"] .. ": 8x"},
+		[3] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 3x, " .. QBCore.Shared.Items["steel"]["label"] .. ": 7x, " .. QBCore.Shared.Items["rubber"]["label"] .. ": 2x"},
+		[4] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 3x, " .. QBCore.Shared.Items["steel"]["label"] .. ": 6x, " .. QBCore.Shared.Items["rubber"]["label"] .. ": 2x"},
+		[5] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 5x, " .. QBCore.Shared.Items["steel"]["label"] .. ": 8x, " .. QBCore.Shared.Items["rubber"]["label"] .. ": 6x"},
+		[6] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 4x, " .. QBCore.Shared.Items["steel"]["label"] .. ": 5x, " .. QBCore.Shared.Items["rubber"]["label"] .. ": 2x"},
+		[7] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 6x, " .. QBCore.Shared.Items["steel"]["label"] .. ": 8x, " .. QBCore.Shared.Items["rubber"]["label"] .. ": 2x, " .. QBCore.Shared.Items["smg_extendedclip"]["label"] .. ": 1x"},
+		[8] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 5x, " .. QBCore.Shared.Items["steel"]["label"] .. ": 9x, " .. QBCore.Shared.Items["rubber"]["label"] .. ": 4x, " .. QBCore.Shared.Items["smg_extendedclip"]["label"] .. ": 2x"},
 	}
 
 	local items = {}
@@ -348,6 +349,10 @@ end)
 
 RegisterNetEvent('QBCore:Player:SetPlayerData', function(val)
     PlayerData = val
+    SendNUIMessage({
+        action = 'UpdateCash',
+        cash = PlayerData.money['cash']
+    })
 end)
 
 AddEventHandler('onResourceStop', function(name)
@@ -431,6 +436,7 @@ RegisterNetEvent('inventory:client:OpenInventory', function(PlayerAmmo, inventor
             maxweight = Config.MaxInventoryWeight,
             Ammo = PlayerAmmo,
             maxammo = Config.MaximumAmmoValues,
+            cash = PlayerData.money['cash']
         })
         inInventory = true
     end
@@ -677,59 +683,69 @@ RegisterCommand('inventory', function()
                 end
             end
 
+            -- Trunk
             if CurrentVehicle then -- Trunk
                 local vehicleClass = GetVehicleClass(curVeh)
                 local maxweight
                 local slots
-                if vehicleClass == 0 then
-                    maxweight = 38000
-                    slots = 30
-                elseif vehicleClass == 1 then
-                    maxweight = 50000
-                    slots = 40
-                elseif vehicleClass == 2 then
-                    maxweight = 75000
-                    slots = 50
-                elseif vehicleClass == 3 then
-                    maxweight = 42000
-                    slots = 35
-                elseif vehicleClass == 4 then
-                    maxweight = 38000
-                    slots = 30
-                elseif vehicleClass == 5 then
-                    maxweight = 30000
-                    slots = 25
-                elseif vehicleClass == 6 then
-                    maxweight = 30000
-                    slots = 25
-                elseif vehicleClass == 7 then
-                    maxweight = 30000
-                    slots = 25
-                elseif vehicleClass == 8 then
-                    maxweight = 15000
-                    slots = 15
-                elseif vehicleClass == 9 then
-                    maxweight = 60000
-                    slots = 35
-                elseif vehicleClass == 12 then
-                    maxweight = 120000
-                    slots = 35
-                elseif vehicleClass == 13 then
-                    maxweight = 0
-                    slots = 0
-                elseif vehicleClass == 14 then
-                    maxweight = 120000
-                    slots = 50
-                elseif vehicleClass == 15 then
-                    maxweight = 120000
-                    slots = 50
-                elseif vehicleClass == 16 then
-                    maxweight = 120000
-                    slots = 50
-                else
-                    maxweight = 60000
-                    slots = 35
-                end
+                local modelname = string.lower(GetDisplayNameFromVehicleModel(GetEntityModel(curVeh))) --Change Add
+                if QBCore.Shared.Vehicles[modelname] then                               --Change Add
+                    maxweight = QBCore.Shared.Vehicles[modelname].trunk                --Change Add
+                    slots = QBCore.Shared.Vehicles[modelname].trunkslots               --Change Add
+                else                                                                    --Change Add
+                    if vehicleClass == 0 then
+                        maxweight = 38000
+                        slots = 30
+                    elseif vehicleClass == 1 then
+                        maxweight = 50000
+                        slots = 40
+                    elseif vehicleClass == 2 then
+                        maxweight = 75000
+                        slots = 50
+                    elseif vehicleClass == 3 then
+                        maxweight = 42000
+                        slots = 35
+                    elseif vehicleClass == 4 then
+                        maxweight = 38000
+                        slots = 30
+                    elseif vehicleClass == 5 then
+                        maxweight = 30000
+                        slots = 25
+                    elseif vehicleClass == 6 then
+                        maxweight = 30000
+                        slots = 25
+                    elseif vehicleClass == 7 then
+                        maxweight = 30000
+                        slots = 25
+                    elseif vehicleClass == 8 then
+                        maxweight = 15000
+                        slots = 15
+                    elseif vehicleClass == 9 then
+                        maxweight = 60000
+                        slots = 35
+                    elseif vehicleClass == 12 then
+                        maxweight = 120000
+                        slots = 35
+                    elseif vehicleClass == 13 then
+                        maxweight = 0
+                        slots = 0
+                    elseif vehicleClass == 14 then
+                        maxweight = 120000
+                        slots = 50
+                    elseif vehicleClass == 15 then
+                        maxweight = 120000
+                        slots = 50
+                    elseif vehicleClass == 16 then
+                        maxweight = 120000
+                        slots = 50
+                    else
+                        maxweight = 60000
+                        slots = 35
+                    end
+    
+                end                                     --Change Add
+
+
                 local other = {
                     maxweight = maxweight,
                     slots = slots,
@@ -754,7 +770,7 @@ RegisterCommand('inventory', function()
     end
 end, false)
 
-RegisterKeyMapping('inventory', 'Open Inventory', 'keyboard', 'TAB')
+RegisterKeyMapping('inventory', 'Open Inventory', 'keyboard', 'I')
 
 RegisterCommand('hotbar', function()
     isHotbar = not isHotbar
@@ -1001,6 +1017,22 @@ CreateThread(function()
     end
 end)
 
+CreateThread(function()
+    if Config.UseTarget then
+        exports['qb-target']:AddTargetModel(Config.VendingObjects, {
+            options = {
+                {
+                    icon = "fa-solid fa-cash-register",
+                    label = "Vending",
+                    action = function()
+                        OpenVending()
+                    end
+                },
+            },
+            distance = 2.5
+        })
+    end
+end)
 
     --qb-target
     RegisterNetEvent("inventory:client:Crafting", function(dropId)

@@ -1,7 +1,7 @@
 fx_version 'cerulean'
 game 'gta5'
 
-description 'lj-Inventory'
+description 'qb-inventory'
 version '1.0'
 
 shared_scripts {

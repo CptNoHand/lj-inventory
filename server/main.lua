@@ -1463,6 +1463,8 @@ RegisterNetEvent('inventory:server:SetInventoryData', function(fromInventory, to
 			elseif QBCore.Shared.SplitStr(toInventory, "-")[1] == "stash" then
 				local stashId = QBCore.Shared.SplitStr(toInventory, "-")[2]
 				local toItemData = Stashes[stashId].items[toSlot]
+			        if not (string.match(fromItemData.name, "backpack") and string.match(toInventory, "backpack")) then
+					end
 				RemoveItem(src, fromItemData.name, fromAmount, fromSlot)
 				TriggerClientEvent("inventory:client:CheckWeapon", src, fromItemData.name)
 				--Player.PlayerData.items[toSlot] = fromItemData
@@ -1779,6 +1781,7 @@ RegisterNetEvent('inventory:server:SetInventoryData', function(fromInventory, to
 			end
 		elseif QBCore.Shared.SplitStr(shopType, "_")[1] == "Itemshop" then
 			if Player.Functions.RemoveMoney("cash", price, "itemshop-bought-item") then
+				exports['ap-government']:chargeCityTax(Player.PlayerData.source, "Item", price)
                 if QBCore.Shared.SplitStr(itemData.name, "_")[1] == "weapon" then
                     itemData.info.serie = tostring(QBCore.Shared.RandomInt(2) .. QBCore.Shared.RandomStr(3) .. QBCore.Shared.RandomInt(1) .. QBCore.Shared.RandomStr(2) .. QBCore.Shared.RandomInt(3) .. QBCore.Shared.RandomStr(4))
 					itemData.info.quality = 100
@@ -1789,6 +1792,7 @@ RegisterNetEvent('inventory:server:SetInventoryData', function(fromInventory, to
 				TriggerEvent("qb-log:server:CreateLog", "shops", "Shop item bought", "green", "**"..GetPlayerName(src) .. "** bought a " .. itemInfo["label"] .. " for $"..price)
 			elseif bankBalance >= price then
 				Player.Functions.RemoveMoney("bank", price, "itemshop-bought-item")
+				exports['ap-government']:chargeCityTax(Player.PlayerData.source, "Item", price)
                 if QBCore.Shared.SplitStr(itemData.name, "_")[1] == "weapon" then
                     itemData.info.serie = tostring(QBCore.Shared.RandomInt(2) .. QBCore.Shared.RandomStr(3) .. QBCore.Shared.RandomInt(1) .. QBCore.Shared.RandomStr(2) .. QBCore.Shared.RandomInt(3) .. QBCore.Shared.RandomStr(4))
 					itemData.info.quality = 100
@@ -2043,7 +2047,13 @@ QBCore.Commands.Add("giveitem", "Give An Item (Admin Only)", {{name="id", help="
 					amount = 1
 					info.serie = tostring(QBCore.Shared.RandomInt(2) .. QBCore.Shared.RandomStr(3) .. QBCore.Shared.RandomInt(1) .. QBCore.Shared.RandomStr(2) .. QBCore.Shared.RandomInt(3) .. QBCore.Shared.RandomStr(4))
 					info.quality = 100
+				elseif itemData["name"] == "syphoningkit" then
+					info.gasamount = 0
+				elseif itemData["name"] == "jerrycan" then
+					info.gasamount = 0
 				elseif itemData["name"] == "harness" then
+					info.uses = 20
+				elseif itemData["name"] == "redwoodcigs" then
 					info.uses = 20
 				elseif itemData["name"] == "markedbills" then
 					info.worth = math.random(5000, 10000)
@@ -2095,68 +2105,6 @@ QBCore.Commands.Add('clearinv', 'Clear Players Inventory (Admin Only)', { { name
         QBCore.Functions.Notify(source, "Player not online", 'error')
     end
 end, 'admin')
-
--- item
-
--- QBCore.Functions.CreateUseableItem("snowball", function(source, item)
--- 	local Player = QBCore.Functions.GetPlayer(source)
--- 	local itemData = Player.Functions.GetItemBySlot(item.slot)       -- --- DID THIS GET PUT ELSEWHERE?? IDK
--- 	if Player.Functions.GetItemBySlot(item.slot) then
---         TriggerClientEvent("inventory:client:UseSnowball", source, itemData.amount)
---     end
--- end)
-
-CreateUsableItem("driver_license", function(source, item)
-	local playerPed = GetPlayerPed(source)
-	local playerCoords = GetEntityCoords(playerPed)
-	local players = QBCore.Functions.GetPlayers()
-	for _, v in pairs(players) do
-		local targetPed = GetPlayerPed(v)
-		local dist = #(playerCoords - GetEntityCoords(targetPed))
-		if dist < 3.0 then
-			TriggerClientEvent('chat:addMessage', v,  {
-					template = '<div class="chat-message advert"><div class="chat-message-body"><strong>{0}:</strong><br><br> <strong>First Name:</strong> {1} <br><strong>Last Name:</strong> {2} <br><strong>Birth Date:</strong> {3} <br><strong>Licenses:</strong> {4}</div></div>',
-					args = {
-						"Drivers License",
-						item.info.firstname,
-						item.info.lastname,
-						item.info.birthdate,
-						item.info.type
-					}
-				}
-			)
-		end
-	end
-end)
-
-CreateUsableItem("id_card", function(source, item)
-	local playerPed = GetPlayerPed(source)
-	local playerCoords = GetEntityCoords(playerPed)
-	local players = QBCore.Functions.GetPlayers()
-	for _, v in pairs(players) do
-		local targetPed = GetPlayerPed(v)
-		local dist = #(playerCoords - GetEntityCoords(targetPed))
-		if dist < 3.0 then
-			local gender = "Man"
-			if item.info.gender == 1 then
-				gender = "Woman"
-			end
-			TriggerClientEvent('chat:addMessage', v,  {
-					template = '<div class="chat-message advert"><div class="chat-message-body"><strong>{0}:</strong><br><br> <strong>Civ ID:</strong> {1} <br><strong>First Name:</strong> {2} <br><strong>Last Name:</strong> {3} <br><strong>Birthdate:</strong> {4} <br><strong>Gender:</strong> {5} <br><strong>Nationality:</strong> {6}</div></div>',
-					args = {
-						"ID Card",
-						item.info.citizenid,
-						item.info.firstname,
-						item.info.lastname,
-						item.info.birthdate,
-						gender,
-						item.info.nationality
-					}
-				}
-			)
-		end
-	end
-end)
 
 
 CreateThread(function()
