@@ -1163,13 +1163,13 @@ RegisterNetEvent('inventory:server:OpenInventory', function(name, id, other)
 				end
 				secondInv.name = "trunk-"..id
 				secondInv.label = "Trunk-"..id
-				secondInv.maxweight = other.maxweight or 60000
+				secondInv.maxweight = other.maxweight or 150000 --60000
 				secondInv.inventory = {}
-				secondInv.slots = other.slots or 50
+				secondInv.slots = other.slots or 35  --50
 				if (Trunks[id] and Trunks[id].isOpen) or (QBCore.Shared.SplitStr(id, "PLZI")[2] and Player.PlayerData.job.name ~= "police") then
 					secondInv.name = "none-inv"
 					secondInv.label = "Trunk-None"
-					secondInv.maxweight = other.maxweight or 60000
+					secondInv.maxweight = other.maxweight or 150000  --60000
 					secondInv.inventory = {}
 					secondInv.slots = 0
 				else
@@ -1366,6 +1366,24 @@ RegisterNetEvent('inventory:server:UseItem', function(inventory, item)
 		UseItem(itemData.name, src, itemData)
 		TriggerClientEvent('inventory:client:ItemBox', src, itemInfo, "use")
 	end
+end)
+
+RegisterNetEvent("inventory:server:addtotrunk", function(plate, toSlot, fromSlot, item, amount, info)
+	local itemInfo = QBCore.Shared.Items[item:lower()]
+	if Trunks[plate] then else Trunks[plate] = {items = {},} end
+	Trunks[plate].items[#Trunks[plate].items + 1] = {
+	    name = itemInfo["name"],
+	    amount = amount,
+	    info = info ~= nil and info or "",
+	    label = itemInfo["label"],
+		description = itemInfo["description"] ~= nil and itemInfo["description"] or "",
+	    weight = itemInfo["weight"],
+        type = itemInfo["type"],
+		unique = itemInfo["unique"],
+	    useable = itemInfo["useable"],
+        image = itemInfo["image"],
+	    slot = #Trunks[plate].items + 1,
+	}
 end)
 
 RegisterNetEvent('inventory:server:SetInventoryData', function(fromInventory, toInventory, fromSlot, toSlot, fromAmount, toAmount)

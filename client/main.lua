@@ -1065,12 +1065,12 @@ end)
                 {
                     event = "inventory:client:WeaponAttachmentCrafting",
                     icon = "fas fa-wrench",
-                    label = "Weapon Attachment Crafting", 
+                    label = "Waffenteile herstellen", 
                 },
                 {
                     event = "inventory:client:Crafting",
                     icon = "fas fa-wrench",
-                    label = "Item Crafting", 
+                    label = "Item Herstellung", 
                 },
             },
         distance = 1.0
