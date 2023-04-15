@@ -185,19 +185,15 @@ end
 
 local function ItemsToItemInfo()
 	itemInfos = {
-		[1] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 3x, " ..QBCore.Shared.Items["plastic"]["label"] .. ": 4x."},
-		[2] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 8x, " ..QBCore.Shared.Items["plastic"]["label"] .. ": 6x."},
-		[3] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 5x, " ..QBCore.Shared.Items["plastic"]["label"] .. ": 4x, "..QBCore.Shared.Items["aluminum"]["label"] .. ": 6x."},
-		[4] = {costs = QBCore.Shared.Items["electronickit"]["label"] .. ": 2x, " ..QBCore.Shared.Items["plastic"]["label"] .. ": 4x, "..QBCore.Shared.Items["steel"]["label"] .. ": 5x."},
-		[5] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 4x, " ..QBCore.Shared.Items["plastic"]["label"] .. ": 3x, "..QBCore.Shared.Items["aluminum"]["label"] .. ": 4x, "..QBCore.Shared.Items["iron"]["label"] .. ": 5x, "..QBCore.Shared.Items["electronickit"]["label"] .. ": 1x."},
-		[6] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 4x, " ..QBCore.Shared.Items["steel"]["label"] .. ": 4x, "..QBCore.Shared.Items["aluminum"]["label"] .. ": 4x."},
-		[7] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 4x, " ..QBCore.Shared.Items["steel"]["label"] .. ": 5x, "..QBCore.Shared.Items["plastic"]["label"] .. ": 7x."},
-		[8] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 5x, " ..QBCore.Shared.Items["steel"]["label"] .. ": 5x, "..QBCore.Shared.Items["copper"]["label"] .. ": 5x."},
-		[9] = {costs = QBCore.Shared.Items["iron"]["label"] .. ": 6x, " ..QBCore.Shared.Items["glass"]["label"] .. ": 6x."},
-		[10] = {costs = QBCore.Shared.Items["aluminum"]["label"] .. ": 6x, " ..QBCore.Shared.Items["glass"]["label"] .. ": 6x."},
-		[11] = {costs = QBCore.Shared.Items["iron"]["label"] .. ": 5x, " ..QBCore.Shared.Items["steel"]["label"] .. ": 5x, "..QBCore.Shared.Items["plastic"]["label"] .. ": 6x, "..QBCore.Shared.Items["aluminum"]["label"] .. ": 5x."},
-		[12] = {costs = QBCore.Shared.Items["iron"]["label"] .. ": 5x, " ..QBCore.Shared.Items["steel"]["label"] .. ": 6x, "..QBCore.Shared.Items["screwdriverset"]["label"] .. ": 3x, "..QBCore.Shared.Items["advancedlockpick"]["label"] .. ": 5x."},
-        [13] = {costs = QBCore.Shared.Items["iron"]["label"] .. ": 1x, " ..QBCore.Shared.Items["steel"]["label"] .. ": 1x, "..QBCore.Shared.Items["screwdriverset"]["label"] .. ": 1x, "..QBCore.Shared.Items["thermite"]["label"] .. ": 1x."},
+		[1] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 1x, " ..QBCore.Shared.Items["plastic"]["label"] .. ": 1x."},
+		[2] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 4x, " ..QBCore.Shared.Items["plastic"]["label"] .. ": 3x."},
+		[3] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 3x, " ..QBCore.Shared.Items["plastic"]["label"] .. ": 2x, "..QBCore.Shared.Items["aluminum"]["label"] .. ": 4x."},
+		[4] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 2x, " ..QBCore.Shared.Items["plastic"]["label"] .. ": 3x, "..QBCore.Shared.Items["aluminum"]["label"] .. ": 4x, "..QBCore.Shared.Items["iron"]["label"] .. ": 5x, "..QBCore.Shared.Items["electronickit"]["label"] .. ": 1x."},
+		[5] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 2x, " ..QBCore.Shared.Items["steel"]["label"] .. ": 4x, "..QBCore.Shared.Items["aluminum"]["label"] .. ": 4x."},
+		[6] = {costs = QBCore.Shared.Items["iron"]["label"] .. ": 4x, " ..QBCore.Shared.Items["glass"]["label"] .. ": 4x."},
+		[7] = {costs = QBCore.Shared.Items["aluminum"]["label"] .. ": 4x, " ..QBCore.Shared.Items["glass"]["label"] .. ": 4x."},
+		[8] = {costs = QBCore.Shared.Items["iron"]["label"] .. ": 3x, " ..QBCore.Shared.Items["steel"]["label"] .. ": 5x, "..QBCore.Shared.Items["plastic"]["label"] .. ": 3x, "..QBCore.Shared.Items["aluminum"]["label"] .. ": 6x."},
+		[9] = {costs = QBCore.Shared.Items["iron"]["label"] .. ": 5x, " ..QBCore.Shared.Items["steel"]["label"] .. ": 6x, "..QBCore.Shared.Items["screwdriverset"]["label"] .. ": 3x, "..QBCore.Shared.Items["advancedlockpick"]["label"] .. ": 5x."},
 	}
 
 	local items = {}
@@ -1052,6 +1048,30 @@ CreateThread(function()
 end)
 
 CreateThread(function()
+    while true do
+        local sleep = 1000
+        if LocalPlayer.state['isLoggedIn'] then
+            local pos = GetEntityCoords(PlayerPedId())
+            local distance = #(pos - Config.AttachmentCraftingLocation)
+            if distance < 10 then
+                if distance < 1.5 then
+                    sleep = 0
+                    DrawText3Ds(Config.AttachmentCraftingLocation.x, Config.AttachmentCraftingLocation.y, Config.AttachmentCraftingLocation.z, Lang:t("interaction.craft"))
+                    if IsControlJustPressed(0, 38) then
+                        local crafting = {}
+                        crafting.label = Lang:t("label.a_craft")
+                        crafting.items = GetAttachmentThresholdItems()
+                        TriggerServerEvent("inventory:server:OpenInventory", "attachment_crafting", math.random(1, 99), crafting)
+                        sleep = 100
+                    end
+                end
+            end
+        end
+        Wait(sleep)
+    end
+end)
+
+CreateThread(function()
     if Config.UseTarget then
         exports['qb-target']:AddTargetModel(Config.VendingObjects, {
             options = {
@@ -1096,11 +1116,11 @@ end)
     }
     exports['qb-target']:AddTargetModel(toolBoxModels, {
             options = {
-                {
+                --[[{
                     event = "inventory:client:WeaponAttachmentCrafting",
                     icon = "fas fa-wrench",
                     label = "Waffenteile herstellen", 
-                },
+                },]]--
                 {
                     event = "inventory:client:Crafting",
                     icon = "fas fa-wrench",
