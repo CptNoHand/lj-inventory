@@ -11,26 +11,6 @@ So, I know the NoPixel 3.5 inventory update is a very controversial topic for mo
 
 Runs at ~ 0.00 to 0.01 ms if you have more optimization suggestions feel free to reach out
 
-# Important, If you want the decay to work follow this steps, this is not needed if you dont want to use decay
-you need to add a decay and created value in your qb-core/shared/items for all items, the decay is set to be the days the item lasts
-<br>
-
-```lua
--- created = this will get filled in with the time when it's created, just leave this
--- decay = amount of days that an item will decay
--- delete = choice whether to remove the item when it's decayed or not
-["created"] = nil, ["decay"] = 28.0, ["delete"] = true
-```
-<br>
-Example:
-<br>
-
-```lua
-['sandwich'] = {['name'] = 'sandwich', ['label'] = 'Sandwich', ['weight'] = 200, ['type'] = 'item', ['image'] = 'sandwich.png', ['unique'] = false, ['useable'] = true, ['shouldClose'] = true,	['combinable'] = nil, ['description'] = 'Nice bread for your stomach', ["created"] = nil, ["decay"] = 3.0, ["delete"] = true},
-```
-In this example our sandwich will decay in 3 days and removed when used.
-<br>
-
 In collaboration with [OnlyCats](https://github.com/onlycats) who helped reorganized and also created some custom images.
 # Dependencies
 * [qbcore framework](https://github.com/qbcore-framework)
@@ -42,20 +22,18 @@ In collaboration with [OnlyCats](https://github.com/onlycats) who helped reorgan
 * [qb-drugs](https://github.com/qbcore-framework/qb-drugs)
 * [qb-shops](https://github.com/qbcore-framework/qb-shops)
 
-# How to install lj-inventory (Latest QBCore Update)
+# How to install qb-inventory (Latest QBCore Update)
 * Download source files from github
 * Make sure you have latest updated [qb-core](https://github.com/qbcore-framework/qb-core)
 * Make sure you have latest updated [qb-smallresources](https://github.com/qbcore-framework/qb-smallresources)
 * Make sure you have latest updated [qb-weapons](https://github.com/qbcore-framework/qb-weapons)
 * Drag source files into your resources folder
-* Rename folder from `lj-inventory-main` to `lj-inventory`
-* Replace all qb-inventory to lj-inventory. Example below using Visual Studio Code in replacing all instances. 
-![image](https://user-images.githubusercontent.com/82112471/225484545-b2c79869-e7b4-4f37-81da-829e4430f73f.png)
- 
+* Rename folder from `qb-inventory-main` to `qb-inventory`
+* Replace all qb-inventory to qb-inventory. 
 
 # Key Features
 * ALL IMAGES FOLLOW THE SAME DIMENSIONS
-* Easy Photoshop guideline template for creating custom images within lj-inventory
+* Easy Photoshop guideline template for creating custom images within qb-inventory
 * Custom brand logo above option buttons
 * Options menu
 * Help box 
@@ -70,8 +48,8 @@ In collaboration with [OnlyCats](https://github.com/onlycats) who helped reorgan
 #
 
 # Previews
-### Simple guideline psd provided (found in main directory lj-inventory)
-![lj-inventory Guideline](https://user-images.githubusercontent.com/91661118/146315681-c67f542d-e2bc-43ca-9957-7f1971b84268.png)
+### Simple guideline psd provided (found in main directory qb-inventory)
+![qb-inventory Guideline](https://user-images.githubusercontent.com/91661118/146315681-c67f542d-e2bc-43ca-9957-7f1971b84268.png)
 ### Full Inventory
 ![full inventory](https://user-images.githubusercontent.com/91661118/146315750-1199a37e-88e0-4d48-86d3-ae0b85df6a72.png)
 ### Options Menu
@@ -92,9 +70,6 @@ In collaboration with [OnlyCats](https://github.com/onlycats) who helped reorgan
 
 # Credits
 * ihyajb (Aj) for [original version](https://github.com/ihyajb/aj-inventory)
-* Jay for [decay](https://github.com/tnj-development/inventory)
-* i-kulgu for [updated decay](https://github.com/i-kulgu/qb-inventory-decay)
-
 
 # Issues and Suggestions
 Please use the GitHub issues system to report issues or make suggestions, when making suggestion, please keep [Suggestion] in the title to make it clear that it is a suggestion.

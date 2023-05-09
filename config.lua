@@ -2,13 +2,18 @@ Config = {}
 
 Config.UseTarget = GetConvar('UseTarget', 'false') == 'true' -- Use qb-target interactions (don't change this, go to your server.cfg and add `setr UseTarget true` to use this and just that from true to false or the other way around)
 
-Config.MaxInventoryWeight = 120000 -- Max weight a player can carry (default 120kg, written in grams)
-Config.MaxInventorySlots = 41 -- Max inventory slots for a player
+Config.MaxInventoryWeight = 35000 -- Max weight a player can carry (default 120kg, written in grams)
+Config.MaxInventorySlots = 45 -- Max inventory slots for a player
+
+Config.KeyBinds = {
+    Inventory = 'I',
+    HotBar = 'z'
+}
 
 Config.CleanupDropTime = 15 * 60 -- How many seconds it takes for drops to be untouched before being deleted
 Config.MaxDropViewDistance = 12.5 -- The distance in GTA Units that a drop can be seen
-Config.UseItemDrop = false -- This will enable item object to spawn on drops instead of markers
-Config.ItemDropObject = `sf_prop_sf_backpack_01a` -- if Config.UseItemDrop is true, this will be the prop that spawns for the item
+Config.UseItemDrop = true -- This will enable item object to spawn on drops instead of markers
+Config.ItemDropObject = `prop_nigel_bag_pickup` -- if Config.UseItemDrop is true, this will be the prop that spawns for the item
 
 Config.Progressbar = {
     Enable = false,         -- True to Enable the progressbar while opening inventory
@@ -48,13 +53,13 @@ Config.VendingItem = {
 }
 
 Config.CraftingItems = {
-    [1] = {
+    --[[[1] = {
         name = "lockpick",
         amount = 50,
         info = {},
         costs = {
-            ["metalscrap"] = 22,
-            ["plastic"] = 32,
+            ["metalscrap"] = 1,
+            ["plastic"] = 1,
         },
         type = "item",
         slot = 1,
@@ -66,170 +71,113 @@ Config.CraftingItems = {
         amount = 50,
         info = {},
         costs = {
-            ["metalscrap"] = 30,
-            ["plastic"] = 42,
+            ["metalscrap"] = 4,
+            ["plastic"] = 3,
         },
         type = "item",
         slot = 2,
         threshold = 0,
-        points = 2,
+        points = 3,
     },
     [3] = {
         name = "electronickit",
         amount = 50,
         info = {},
         costs = {
-            ["metalscrap"] = 30,
-            ["plastic"] = 45,
-            ["aluminum"] = 28,
+            ["metalscrap"] = 3,
+            ["plastic"] = 2,
+            ["aluminum"] = 4,
         },
         type = "item",
         slot = 3,
         threshold = 0,
-        points = 3,
+        points = 5,
     },
     [4] = {
-        name = "radioscanner",
-        amount = 50,
-        info = {},
-        costs = {
-            ["electronickit"] = 2,
-            ["plastic"] = 52,
-            ["steel"] = 40,
-        },
-        type = "item",
-        slot = 4,
-        threshold = 0,
-        points = 4,
-    },
-    [5] = {
         name = "gatecrack",
         amount = 50,
         info = {},
         costs = {
-            ["metalscrap"] = 10,
-            ["plastic"] = 50,
-            ["aluminum"] = 30,
-            ["iron"] = 17,
-            ["electronickit"] = 2,
+            ["metalscrap"] = 2,
+            ["plastic"] = 3,
+            ["aluminum"] = 4,
+            ["iron"] = 5,
+            ["electronickit"] = 1,
         },
         type = "item",
-        slot = 5,
-        threshold = 110,
+        slot = 4,
+        threshold = 80,
         points = 5,
     },
-    [6] = {
+    [5] = {
         name = "handcuffs",
         amount = 50,
         info = {},
         costs = {
-            ["metalscrap"] = 36,
-            ["steel"] = 24,
-            ["aluminum"] = 28,
+            ["metalscrap"] = 2,
+            ["steel"] = 4,
+            ["aluminum"] = 4,
         },
         type = "item",
-        slot = 6,
-        threshold = 160,
+        slot = 5,
+        threshold = 100,
         points = 6,
     },
-    [7] = {
-        name = "repairkit",
-        amount = 50,
-        info = {},
-        costs = {
-            ["metalscrap"] = 32,
-            ["steel"] = 43,
-            ["plastic"] = 61,
-        },
-        type = "item",
-        slot = 7,
-        threshold = 200,
-        points = 7,
-    },
-    [8] = {
-        name = "pistol_ammo",
-        amount = 50,
-        info = {},
-        costs = {
-            ["metalscrap"] = 50,
-            ["steel"] = 37,
-            ["copper"] = 26,
-        },
-        type = "item",
-        slot = 8,
-        threshold = 250,
-        points = 8,
-    },
-    [9] = {
+    [6] = {
         name = "ironoxide",
         amount = 50,
         info = {},
         costs = {
-            ["iron"] = 60,
-            ["glass"] = 30,
+            ["iron"] = 4,
+            ["glass"] = 4,
         },
         type = "item",
-        slot = 9,
-        threshold = 300,
-        points = 9,
+        slot = 6,
+        threshold = 120,
+        points = 7,
     },
-    [10] = {
+    [7] = {
         name = "aluminumoxide",
         amount = 50,
         info = {},
         costs = {
-            ["aluminum"] = 60,
-            ["glass"] = 30,
+            ["aluminum"] = 4,
+            ["glass"] = 4,
         },
         type = "item",
-        slot = 10,
-        threshold = 300,
-        points = 10,
+        slot = 7,
+        threshold = 120,
+        points = 9,
     },
-    [11] = {
-        name = "armor",
-        amount = 50,
-        info = {},
-        costs = {
-            ["iron"] = 33,
-            ["steel"] = 44,
-            ["plastic"] = 55,
-            ["aluminum"] = 22,
-        },
-        type = "item",
-        slot = 11,
-        threshold = 350,
-        points = 11,
-    },
-    [12] = {
+    [8] = {
         name = "drill",
         amount = 50,
         info = {},
         costs = {
-            ["iron"] = 50,
-            ["steel"] = 50,
+            ["iron"] = 5,
+            ["steel"] = 6,
             ["screwdriverset"] = 3,
-            ["advancedlockpick"] = 2,
+            ["advancedlockpick"] = 5,
         },
         type = "item",
-        slot = 12,
-        threshold = 1750,
-        points = 12,
-    },
+        slot = 8,
+        threshold = 200,
+        points = 11,
+    },]]--
 }
 
-Config.AttachmentCraftingLocation = vector3(88.91, 3743.88, 40.77) -- Only needed if not using target
+Config.AttachmentCraftingLocation = vector3(1105.5, -2327.93, 31.39)
 
 Config.AttachmentCrafting = {
-    ["items"] = {
+    --[[["items"] = {
         [1] = {
             name = "pistol_extendedclip",
             amount = 50,
             info = {},
             costs = {
-                ["metalscrap"] = 140,
-                ["steel"] = 250,
-                ["rubber"] = 60,
+                ["metalscrap"] = 2,
+                ["steel"] = 5,
+                ["rubber"] = 2,
             },
             type = "item",
             slot = 1,
@@ -241,9 +189,9 @@ Config.AttachmentCrafting = {
             amount = 50,
             info = {},
             costs = {
-                ["metalscrap"] = 165,
-                ["steel"] = 285,
-                ["rubber"] = 75,
+                ["metalscrap"] = 1,
+                ["steel"] = 2,
+                ["rubber"] = 8,
             },
             type = "item",
             slot = 2,
@@ -255,9 +203,9 @@ Config.AttachmentCrafting = {
             amount = 50,
             info = {},
             costs = {
-                ["metalscrap"] = 190,
-                ["steel"] = 305,
-                ["rubber"] = 85,
+                ["metalscrap"] = 3,
+                ["steel"] = 7,
+                ["rubber"] = 2,
             },
             type = "item",
             slot = 3,
@@ -269,9 +217,9 @@ Config.AttachmentCrafting = {
             amount = 50,
             info = {},
             costs = {
-                ["metalscrap"] = 205,
-                ["steel"] = 340,
-                ["rubber"] = 110,
+                ["metalscrap"] = 3,
+                ["steel"] = 6,
+                ["rubber"] = 2,
             },
             type = "item",
             slot = 4,
@@ -283,9 +231,9 @@ Config.AttachmentCrafting = {
             amount = 50,
             info = {},
             costs = {
-                ["metalscrap"] = 230,
-                ["steel"] = 365,
-                ["rubber"] = 130,
+                ["metalscrap"] = 5,
+                ["steel"] = 8,
+                ["rubber"] = 6,
             },
             type = "item",
             slot = 5,
@@ -297,9 +245,9 @@ Config.AttachmentCrafting = {
             amount = 50,
             info = {},
             costs = {
-                ["metalscrap"] = 255,
-                ["steel"] = 390,
-                ["rubber"] = 145,
+                ["metalscrap"] = 4,
+                ["steel"] = 5,
+                ["glass"] = 2,
             },
             type = "item",
             slot = 6,
@@ -311,9 +259,9 @@ Config.AttachmentCrafting = {
             amount = 50,
             info = {},
             costs = {
-                ["metalscrap"] = 270,
-                ["steel"] = 435,
-                ["rubber"] = 155,
+                ["metalscrap"] = 6,
+                ["steel"] = 8,
+                ["rubber"] = 2,
                 ["smg_extendedclip"] = 1,
             },
             type = "item",
@@ -326,9 +274,9 @@ Config.AttachmentCrafting = {
             amount = 50,
             info = {},
             costs = {
-                ["metalscrap"] = 300,
-                ["steel"] = 469,
-                ["rubber"] = 170,
+                ["metalscrap"] = 5,
+                ["steel"] = 9,
+                ["rubber"] = 4,
                 ["smg_extendedclip"] = 2,
             },
             type = "item",
@@ -336,7 +284,7 @@ Config.AttachmentCrafting = {
             threshold = 200,
             points = 8,
         },
-    }
+    }]]--
 }
 
 BackEngineVehicles = {

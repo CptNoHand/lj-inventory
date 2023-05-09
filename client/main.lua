@@ -12,7 +12,6 @@ local CurrentGlovebox = nil
 local CurrentStash = nil
 local isCrafting = false
 local isHotbar = false
-local WeaponAttachments = {}
 local showBlur = true
 
 local function HasItem(items, amount)
@@ -50,9 +49,9 @@ exports("HasItem", HasItem)
 
 RegisterNUICallback('showBlur', function()
     Wait(50)
-    TriggerEvent("lj-inventory:client:showBlur")
+    TriggerEvent("qb-inventory:client:showBlur")
 end) 
-RegisterNetEvent("lj-inventory:client:showBlur", function()
+RegisterNetEvent("qb-inventory:client:showBlur", function()
     Wait(50)
     showBlur = not showBlur
 end)
@@ -111,12 +110,18 @@ local function FormatWeaponAttachments(itemdata)
     itemdata.name = itemdata.name:upper()
     if itemdata.info.attachments ~= nil and next(itemdata.info.attachments) ~= nil then
         for _, v in pairs(itemdata.info.attachments) do
-            attachments[#attachments+1] = {
-                attachment = v.item,
-                label = v.label,
-                image = QBCore.Shared.Items[v.item].image,
-                component = v.component
-            }
+            if exports['qb-weapons']:getConfigWeaponAttachments(itemdata.name) then
+                for key, value in pairs(exports['qb-weapons']:getConfigWeaponAttachments(itemdata.name)) do
+                    if value.component == v.component then
+                        local item = value.item
+                        attachments[#attachments+1] = {
+                            attachment = key,
+                            label = QBCore.Shared.Items[item].label
+                            --label = value.label
+                        }
+                    end
+                end
+            end
         end
     end
     return attachments
@@ -185,18 +190,15 @@ end
 
 local function ItemsToItemInfo()
 	itemInfos = {
-		[1] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 22x, " ..QBCore.Shared.Items["plastic"]["label"] .. ": 32x."},
-		[2] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 30x, " ..QBCore.Shared.Items["plastic"]["label"] .. ": 42x."},
-		[3] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 30x, " ..QBCore.Shared.Items["plastic"]["label"] .. ": 45x, "..QBCore.Shared.Items["aluminum"]["label"] .. ": 28x."},
-		[4] = {costs = QBCore.Shared.Items["electronickit"]["label"] .. ": 2x, " ..QBCore.Shared.Items["plastic"]["label"] .. ": 52x, "..QBCore.Shared.Items["steel"]["label"] .. ": 40x."},
-		[5] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 10x, " ..QBCore.Shared.Items["plastic"]["label"] .. ": 50x, "..QBCore.Shared.Items["aluminum"]["label"] .. ": 30x, "..QBCore.Shared.Items["iron"]["label"] .. ": 17x, "..QBCore.Shared.Items["electronickit"]["label"] .. ": 1x."},
-		[6] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 36x, " ..QBCore.Shared.Items["steel"]["label"] .. ": 24x, "..QBCore.Shared.Items["aluminum"]["label"] .. ": 28x."},
-		[7] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 32x, " ..QBCore.Shared.Items["steel"]["label"] .. ": 43x, "..QBCore.Shared.Items["plastic"]["label"] .. ": 61x."},
-		[8] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 50x, " ..QBCore.Shared.Items["steel"]["label"] .. ": 37x, "..QBCore.Shared.Items["copper"]["label"] .. ": 26x."},
-		[9] = {costs = QBCore.Shared.Items["iron"]["label"] .. ": 60x, " ..QBCore.Shared.Items["glass"]["label"] .. ": 30x."},
-		[10] = {costs = QBCore.Shared.Items["aluminum"]["label"] .. ": 60x, " ..QBCore.Shared.Items["glass"]["label"] .. ": 30x."},
-		[11] = {costs = QBCore.Shared.Items["iron"]["label"] .. ": 33x, " ..QBCore.Shared.Items["steel"]["label"] .. ": 44x, "..QBCore.Shared.Items["plastic"]["label"] .. ": 55x, "..QBCore.Shared.Items["aluminum"]["label"] .. ": 22x."},
-		[12] = {costs = QBCore.Shared.Items["iron"]["label"] .. ": 50x, " ..QBCore.Shared.Items["steel"]["label"] .. ": 50x, "..QBCore.Shared.Items["screwdriverset"]["label"] .. ": 3x, "..QBCore.Shared.Items["advancedlockpick"]["label"] .. ": 2x."},
+		[1] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 1x, " ..QBCore.Shared.Items["plastic"]["label"] .. ": 1x."},
+		[2] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 4x, " ..QBCore.Shared.Items["plastic"]["label"] .. ": 3x."},
+		[3] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 3x, " ..QBCore.Shared.Items["plastic"]["label"] .. ": 2x, "..QBCore.Shared.Items["aluminum"]["label"] .. ": 4x."},
+		[4] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 2x, " ..QBCore.Shared.Items["plastic"]["label"] .. ": 3x, "..QBCore.Shared.Items["aluminum"]["label"] .. ": 4x, "..QBCore.Shared.Items["iron"]["label"] .. ": 5x, "..QBCore.Shared.Items["electronickit"]["label"] .. ": 1x."},
+		[5] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 2x, " ..QBCore.Shared.Items["steel"]["label"] .. ": 4x, "..QBCore.Shared.Items["aluminum"]["label"] .. ": 4x."},
+		[6] = {costs = QBCore.Shared.Items["iron"]["label"] .. ": 4x, " ..QBCore.Shared.Items["glass"]["label"] .. ": 4x."},
+		[7] = {costs = QBCore.Shared.Items["aluminum"]["label"] .. ": 4x, " ..QBCore.Shared.Items["glass"]["label"] .. ": 4x."},
+		[8] = {costs = QBCore.Shared.Items["iron"]["label"] .. ": 3x, " ..QBCore.Shared.Items["steel"]["label"] .. ": 5x, "..QBCore.Shared.Items["plastic"]["label"] .. ": 3x, "..QBCore.Shared.Items["aluminum"]["label"] .. ": 6x."},
+		[9] = {costs = QBCore.Shared.Items["iron"]["label"] .. ": 5x, " ..QBCore.Shared.Items["steel"]["label"] .. ": 6x, "..QBCore.Shared.Items["screwdriverset"]["label"] .. ": 3x, "..QBCore.Shared.Items["advancedlockpick"]["label"] .. ": 5x."},
 	}
 
 	local items = {}
@@ -224,14 +226,14 @@ end
 
 local function SetupAttachmentItemsInfo()
 	itemInfos = {
-		[1] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 140x, " .. QBCore.Shared.Items["steel"]["label"] .. ": 250x, " .. QBCore.Shared.Items["rubber"]["label"] .. ": 60x"},
-		[2] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 165x, " .. QBCore.Shared.Items["steel"]["label"] .. ": 285x, " .. QBCore.Shared.Items["rubber"]["label"] .. ": 75x"},
-		[3] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 190x, " .. QBCore.Shared.Items["steel"]["label"] .. ": 305x, " .. QBCore.Shared.Items["rubber"]["label"] .. ": 85x, " .. QBCore.Shared.Items["smg_extendedclip"]["label"] .. ": 1x"},
-		[4] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 205x, " .. QBCore.Shared.Items["steel"]["label"] .. ": 340x, " .. QBCore.Shared.Items["rubber"]["label"] .. ": 110x, " .. QBCore.Shared.Items["smg_extendedclip"]["label"] .. ": 2x"},
-		[5] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 230x, " .. QBCore.Shared.Items["steel"]["label"] .. ": 365x, " .. QBCore.Shared.Items["rubber"]["label"] .. ": 130x"},
-		[6] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 255x, " .. QBCore.Shared.Items["steel"]["label"] .. ": 390x, " .. QBCore.Shared.Items["rubber"]["label"] .. ": 145x"},
-		[7] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 270x, " .. QBCore.Shared.Items["steel"]["label"] .. ": 435x, " .. QBCore.Shared.Items["rubber"]["label"] .. ": 155x"},
-		[8] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 300x, " .. QBCore.Shared.Items["steel"]["label"] .. ": 469x, " .. QBCore.Shared.Items["rubber"]["label"] .. ": 170x"},
+		[1] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 2x, " .. QBCore.Shared.Items["steel"]["label"] .. ": 5x, " .. QBCore.Shared.Items["rubber"]["label"] .. ": 2x"},
+		[2] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 1x, " .. QBCore.Shared.Items["steel"]["label"] .. ": 2x, " .. QBCore.Shared.Items["rubber"]["label"] .. ": 8x"},
+		[3] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 3x, " .. QBCore.Shared.Items["steel"]["label"] .. ": 7x, " .. QBCore.Shared.Items["rubber"]["label"] .. ": 2x"},
+		[4] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 3x, " .. QBCore.Shared.Items["steel"]["label"] .. ": 6x, " .. QBCore.Shared.Items["rubber"]["label"] .. ": 2x"},
+		[5] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 5x, " .. QBCore.Shared.Items["steel"]["label"] .. ": 8x, " .. QBCore.Shared.Items["rubber"]["label"] .. ": 6x"},
+		[6] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 4x, " .. QBCore.Shared.Items["steel"]["label"] .. ": 5x, " .. QBCore.Shared.Items["rubber"]["label"] .. ": 2x"},
+		[7] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 6x, " .. QBCore.Shared.Items["steel"]["label"] .. ": 8x, " .. QBCore.Shared.Items["rubber"]["label"] .. ": 2x, " .. QBCore.Shared.Items["smg_extendedclip"]["label"] .. ": 1x"},
+		[8] = {costs = QBCore.Shared.Items["metalscrap"]["label"] .. ": 5x, " .. QBCore.Shared.Items["steel"]["label"] .. ": 9x, " .. QBCore.Shared.Items["rubber"]["label"] .. ": 4x, " .. QBCore.Shared.Items["smg_extendedclip"]["label"] .. ": 2x"},
 	}
 
 	local items = {}
@@ -348,6 +350,10 @@ end)
 
 RegisterNetEvent('QBCore:Player:SetPlayerData', function(val)
     PlayerData = val
+    SendNUIMessage({
+        action = 'UpdateCash',
+        cash = PlayerData.money['cash']
+    })
 end)
 
 AddEventHandler('onResourceStop', function(name)
@@ -429,9 +435,6 @@ RegisterNetEvent('inventory:client:OpenInventory', function(PlayerAmmo, inventor
                 if other then
                     currentOtherInventory = other.name
                 end
-            QBCore.Functions.TriggerCallback('inventory:server:ConvertQuality', function(data)
-                inventory = data.inventory
-                other = data.other
                 SendNUIMessage({
                     action = "open",
                     inventory = inventory,
@@ -440,12 +443,10 @@ RegisterNetEvent('inventory:client:OpenInventory', function(PlayerAmmo, inventor
                     maxweight = Config.MaxInventoryWeight,
                     Ammo = PlayerAmmo,
                     maxammo = Config.MaximumAmmoValues,
-                    Name = PlayerData.charinfo.firstname .." ".. PlayerData.charinfo.lastname .." - [".. GetPlayerServerId(PlayerId()) .."]", 
                 })
                 inInventory = true
-                end, inventory, other)
-
-        end)
+                end, function() -- Play When Cancel
+            end)
         else
             Wait(500)
             ToggleHotbar(false)
@@ -456,9 +457,6 @@ RegisterNetEvent('inventory:client:OpenInventory', function(PlayerAmmo, inventor
             if other then
                 currentOtherInventory = other.name
             end
-        QBCore.Functions.TriggerCallback('inventory:server:ConvertQuality', function(data)
-            inventory = data.inventory
-            other = data.other
             SendNUIMessage({
                 action = "open",
                 inventory = inventory,
@@ -467,22 +465,11 @@ RegisterNetEvent('inventory:client:OpenInventory', function(PlayerAmmo, inventor
                 maxweight = Config.MaxInventoryWeight,
                 Ammo = PlayerAmmo,
                 maxammo = Config.MaximumAmmoValues,
-                Name = PlayerData.charinfo.firstname .." ".. PlayerData.charinfo.lastname .." - [".. GetPlayerServerId(PlayerId()) .."]", 
+                cash = PlayerData.money['cash']
             })
             inInventory = true
-            end,inventory,other)
         end
     end
-end)
-
-RegisterNetEvent('inventory:client:UpdateOtherInventory', function(items, isError)
-    SendNUIMessage({
-        action = "update",
-        inventory = items,
-        maxweight = Config.MaxInventoryWeight,
-        slots = Config.MaxInventorySlots,
-        error = isError,
-    })
 end)
 
 RegisterNetEvent('inventory:client:UpdatePlayerInventory', function(isError)
@@ -579,8 +566,7 @@ RegisterNetEvent('inventory:client:UseWeapon', function(weaponData, shootbool)
     local ped = PlayerPedId()
     local weaponName = tostring(weaponData.name)
     local weaponHash = joaat(weaponData.name)
-    local weaponinhand = GetCurrentPedWeapon(PlayerPedId())
-    if currentWeapon == weaponName and weaponinhand then
+    if currentWeapon == weaponName then
         TriggerEvent('weapons:client:DrawWeapon', nil)
         SetCurrentPedWeapon(ped, `WEAPON_UNARMED`, true)
         RemoveAllPedWeapons(ped, true)
@@ -731,59 +717,69 @@ RegisterCommand('inventory', function()
                 end
             end
 
+            -- Trunk
             if CurrentVehicle then -- Trunk
                 local vehicleClass = GetVehicleClass(curVeh)
                 local maxweight
                 local slots
-                if vehicleClass == 0 then
-                    maxweight = 38000
-                    slots = 30
-                elseif vehicleClass == 1 then
-                    maxweight = 50000
-                    slots = 40
-                elseif vehicleClass == 2 then
-                    maxweight = 75000
-                    slots = 50
-                elseif vehicleClass == 3 then
-                    maxweight = 42000
-                    slots = 35
-                elseif vehicleClass == 4 then
-                    maxweight = 38000
-                    slots = 30
-                elseif vehicleClass == 5 then
-                    maxweight = 30000
-                    slots = 25
-                elseif vehicleClass == 6 then
-                    maxweight = 30000
-                    slots = 25
-                elseif vehicleClass == 7 then
-                    maxweight = 30000
-                    slots = 25
-                elseif vehicleClass == 8 then
-                    maxweight = 15000
-                    slots = 15
-                elseif vehicleClass == 9 then
-                    maxweight = 60000
-                    slots = 35
-                elseif vehicleClass == 12 then
-                    maxweight = 120000
-                    slots = 35
-                elseif vehicleClass == 13 then
-                    maxweight = 0
-                    slots = 0
-                elseif vehicleClass == 14 then
-                    maxweight = 120000
-                    slots = 50
-                elseif vehicleClass == 15 then
-                    maxweight = 120000
-                    slots = 50
-                elseif vehicleClass == 16 then
-                    maxweight = 120000
-                    slots = 50
-                else
-                    maxweight = 60000
-                    slots = 35
-                end
+                local modelname = string.lower(GetDisplayNameFromVehicleModel(GetEntityModel(curVeh))) --Change Add
+                if QBCore.Shared.Vehicles[modelname] then                               --Change Add
+                    maxweight = QBCore.Shared.Vehicles[modelname].trunk                --Change Add
+                    slots = QBCore.Shared.Vehicles[modelname].trunkslots               --Change Add
+                else                                                                    --Change Add
+                    if vehicleClass == 0 then
+                        maxweight = 38000
+                        slots = 30
+                    elseif vehicleClass == 1 then
+                        maxweight = 50000
+                        slots = 40
+                    elseif vehicleClass == 2 then
+                        maxweight = 75000
+                        slots = 50
+                    elseif vehicleClass == 3 then
+                        maxweight = 42000
+                        slots = 35
+                    elseif vehicleClass == 4 then
+                        maxweight = 38000
+                        slots = 30
+                    elseif vehicleClass == 5 then
+                        maxweight = 30000
+                        slots = 25
+                    elseif vehicleClass == 6 then
+                        maxweight = 30000
+                        slots = 25
+                    elseif vehicleClass == 7 then
+                        maxweight = 30000
+                        slots = 25
+                    elseif vehicleClass == 8 then
+                        maxweight = 15000
+                        slots = 15
+                    elseif vehicleClass == 9 then
+                        maxweight = 60000
+                        slots = 35
+                    elseif vehicleClass == 12 then
+                        maxweight = 120000
+                        slots = 35
+                    elseif vehicleClass == 13 then
+                        maxweight = 0
+                        slots = 0
+                    elseif vehicleClass == 14 then
+                        maxweight = 120000
+                        slots = 50
+                    elseif vehicleClass == 15 then
+                        maxweight = 120000
+                        slots = 50
+                    elseif vehicleClass == 16 then
+                        maxweight = 120000
+                        slots = 50
+                    else
+                        maxweight = 60000
+                        slots = 35
+                    end
+    
+                end                                     --Change Add
+
+
                 local other = {
                     maxweight = maxweight,
                     slots = slots,
@@ -808,7 +804,7 @@ RegisterCommand('inventory', function()
     end
 end, false)
 
-RegisterKeyMapping('inventory', 'Open Inventory', 'keyboard', 'TAB')
+RegisterKeyMapping('inventory', Lang:t("inf_mapping.opn_inv"), 'keyboard', Config.KeyBinds.Inventory)
 
 RegisterCommand('hotbar', function()
     isHotbar = not isHotbar
@@ -817,7 +813,7 @@ RegisterCommand('hotbar', function()
     end
 end)
 
-RegisterKeyMapping('hotbar', 'Toggles keybind slots', 'keyboard', 'z')
+RegisterKeyMapping('hotbar', Lang:t("inf_mapping.tog_slots"), 'keyboard', Config.KeyBinds.HotBar)
 
 for i = 1, 6 do
     RegisterCommand('slot' .. i,function()
@@ -826,6 +822,7 @@ for i = 1, 6 do
                 i = Config.MaxInventorySlots
             end
             TriggerServerEvent("inventory:server:UseItemSlot", i)
+            closeInventory()
         end
     end, false)
     RegisterKeyMapping('slot' .. i, 'Uses the item in slot ' .. i, 'keyboard', i)
@@ -859,18 +856,21 @@ end)
 RegisterNUICallback('RemoveAttachment', function(data, cb)
     local ped = PlayerPedId()
     local WeaponData = QBCore.Shared.Items[data.WeaponData.name]
-    print(data.AttachmentData.attachment:gsub("(.*).*_",''))
-    data.AttachmentData.attachment = data.AttachmentData.attachment:gsub("(.*).*_",'')
+    local Attachment = exports['qb-weapons']:getConfigWeaponAttachments(WeaponData.name:upper())[data.AttachmentData.attachment]
     QBCore.Functions.TriggerCallback('weapons:server:RemoveAttachment', function(NewAttachments)
         if NewAttachments ~= false then
             local attachments = {}
             RemoveWeaponComponentFromPed(ped, GetHashKey(data.WeaponData.name), GetHashKey(data.AttachmentData.component))
             for _, v in pairs(NewAttachments) do
-                attachments[#attachments+1] = {
-                    attachment = v.item,
-                    label = v.label,
-                    image = QBCore.Shared.Items[v.item].image
-                }
+                for _, pew in pairs(exports['qb-weapons']:getConfigWeaponAttachments(WeaponData.name:upper())) do
+                    if v.component == pew.component then
+                        local item = pew.item
+                        Attachies[#Attachies+1] = {
+                            attachment = pew.item,
+                            label = QBCore.Shared.Items[item].label,
+                        }
+                    end
+                end
             end
             local DJATA = {
                 Attachments = attachments,
@@ -1055,6 +1055,46 @@ CreateThread(function()
     end
 end)
 
+CreateThread(function()
+    while true do
+        local sleep = 1000
+        if LocalPlayer.state['isLoggedIn'] then
+            local pos = GetEntityCoords(PlayerPedId())
+            local distance = #(pos - Config.AttachmentCraftingLocation)
+            if distance < 10 then
+                if distance < 1.5 then
+                    sleep = 0
+                    DrawText3Ds(Config.AttachmentCraftingLocation.x, Config.AttachmentCraftingLocation.y, Config.AttachmentCraftingLocation.z, Lang:t("interaction.craft"))
+                    if IsControlJustPressed(0, 38) then
+                        local crafting = {}
+                        crafting.label = Lang:t("label.a_craft")
+                        crafting.items = GetAttachmentThresholdItems()
+                        TriggerServerEvent("inventory:server:OpenInventory", "attachment_crafting", math.random(1, 99), crafting)
+                        sleep = 100
+                    end
+                end
+            end
+        end
+        Wait(sleep)
+    end
+end)
+
+CreateThread(function()
+    if Config.UseTarget then
+        exports['qb-target']:AddTargetModel(Config.VendingObjects, {
+            options = {
+                {
+                    icon = "fa-solid fa-cash-register",
+                    label = "Vending",
+                    action = function()
+                        OpenVending()
+                    end
+                },
+            },
+            distance = 2.5
+        })
+    end
+end)
 
     --qb-target
     RegisterNetEvent("inventory:client:Crafting", function(dropId)
@@ -1084,15 +1124,15 @@ end)
     }
     exports['qb-target']:AddTargetModel(toolBoxModels, {
             options = {
-                {
+                --[[{
                     event = "inventory:client:WeaponAttachmentCrafting",
                     icon = "fas fa-wrench",
-                    label = "Weapon Attachment Crafting", 
-                },
+                    label = "Waffenteile herstellen", 
+                },]]--
                 {
                     event = "inventory:client:Crafting",
                     icon = "fas fa-wrench",
-                    label = "Item Crafting", 
+                    label = "Item Herstellung", 
                 },
             },
         distance = 1.0
