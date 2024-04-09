@@ -1610,24 +1610,6 @@ RegisterNetEvent('inventory:server:UseItem', function(inventory, item)
 	end
 end)
 
-RegisterNetEvent("inventory:server:addtotrunk", function(plate, toSlot, fromSlot, item, amount, info)
-	local itemInfo = QBCore.Shared.Items[item:lower()]
-	if Trunks[plate] then else Trunks[plate] = {items = {},} end
-	Trunks[plate].items[#Trunks[plate].items + 1] = {
-	    name = itemInfo["name"],
-	    amount = amount,
-	    info = info ~= nil and info or "",
-	    label = itemInfo["label"],
-		description = itemInfo["description"] ~= nil and itemInfo["description"] or "",
-	    weight = itemInfo["weight"],
-        type = itemInfo["type"],
-		unique = itemInfo["unique"],
-	    useable = itemInfo["useable"],
-        image = itemInfo["image"],
-	    slot = #Trunks[plate].items + 1,
-	}
-end)
-
 RegisterNetEvent('inventory:server:SetInventoryData', function(fromInventory, toInventory, fromSlot, toSlot, fromAmount, toAmount)
 	local src = source
 	local Player = QBCore.Functions.GetPlayer(src)
@@ -2231,7 +2213,6 @@ QBCore.Functions.CreateCallback('inventory:server:GetCurrentDrops', function(_, 
 end)
 
 QBCore.Functions.CreateCallback('QBCore:HasItem', function(source, cb, items, amount)
-	print("^3QBCore:HasItem is deprecated, please use QBCore.Functions.HasItem, it can be used on both server- and client-side and uses the same arguments.^0")
     local retval = false
     local Player = QBCore.Functions.GetPlayer(source)
     if not Player then return cb(false) end
@@ -2331,11 +2312,15 @@ QBCore.Commands.Add("giveitem", "Give An Item (Admin Only)", {{name="id", help="
 					info.uses = 20
 				elseif itemData["name"] == "markedbills" then
 					info.worth = math.random(5000, 10000)
+				elseif itemData["name"] == "licenseplate" then
+					info.plate = tostring(QBCore.Shared.RandomInt(2) .. QBCore.Shared.RandomStr(2) .. QBCore.Shared.RandomInt(2) .. QBCore.Shared.RandomStr(2))
 				elseif itemData["name"] == "labkey" then
 					info.lab = exports["qb-methlab"]:GenerateRandomLab()
 				elseif itemData["name"] == "printerdocument" then
 					info.url = "https://cdn.discordapp.com/attachments/870094209783308299/870104331142189126/Logo_-_Display_Picture_-_Stylized_-_Red.png"
 				elseif itemData["name"] == "laptop_red" then
+					info.uses = 3
+				elseif itemData["name"] == "laptop_green" then
 					info.uses = 3
 				end
 
@@ -2395,4 +2380,21 @@ CreateThread(function()
 	end
 end)
 
+RegisterNetEvent("inventory:server:addtotrunk", function(plate, toSlot, fromSlot, item, amount, info)
+	local itemInfo = QBCore.Shared.Items[item:lower()]
+	if Trunks[plate] then else Trunks[plate] = {items = {},} end
+	Trunks[plate].items[#Trunks[plate].items + 1] = {
+	    name = itemInfo["name"],
+	    amount = amount,
+	    info = info ~= nil and info or "",
+	    label = itemInfo["label"],
+		description = itemInfo["description"] ~= nil and itemInfo["description"] or "",
+	    weight = itemInfo["weight"],
+        type = itemInfo["type"],
+		unique = itemInfo["unique"],
+	    useable = itemInfo["useable"],
+        image = itemInfo["image"],
+	    slot = #Trunks[plate].items + 1,
+	}
+end)
 --#endregion Threads
