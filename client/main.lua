@@ -804,7 +804,7 @@ RegisterCommand('inventory', function()
     end
 end, false)
 
-RegisterKeyMapping('inventory', Lang:t("inf_mapping.opn_inv"), 'keyboard', Config.KeyBinds.Inventory)
+RegisterKeyMapping('inventory', 'Open Inventory', 'keyboard', 'I')
 
 RegisterCommand('hotbar', function()
     isHotbar = not isHotbar
@@ -1090,6 +1090,26 @@ CreateThread(function()
                         OpenVending()
                     end
                 },
+            },
+            distance = 2.5
+        })
+    end
+end)
+
+CreateThread(function()
+    if Config.UseTarget then
+        exports['qb-target']:AddTargetModel(Config.VendingObjects, {
+            options = {
+                --[[{
+                    event = "inventory:client:WeaponAttachmentCrafting",
+                    icon = "fas fa-wrench",
+                    label = "Waffenteile herstellen", 
+                },
+                {
+                    event = "inventory:client:Crafting",
+                    icon = "fas fa-wrench",
+                    label = "Item Herstellung", 
+                },]]--
             },
             distance = 2.5
         })

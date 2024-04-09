@@ -1,8 +1,8 @@
 fx_version 'cerulean'
 game 'gta5'
 
-description 'QB-Inventory'
-version '1.2.4'
+description 'qb-Inventory'
+version '1.1'
 
 shared_scripts {
     '@qb-core/shared/locale.lua',
